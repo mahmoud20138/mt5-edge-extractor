@@ -1,369 +1,304 @@
-# MT5 Trading Edge Extractor
+# MT5 Edge Extractor
 
-## 🔬 Comprehensive Backtesting System for Extracting Trading Edges
+**ML-Powered Trading Edge Discovery and Validation Framework for MetaTrader 5**
 
-**⚠️ IMPORTANT: This system is for BACKTESTING ONLY. No live trades are executed.**
-
----
-
-## 📊 Overview
-
-This comprehensive Python-based system extracts and validates potential trading edges from MetaTrader 5 (MT5) historical data. It implements a complete workflow based on professional quantitative trading methodology.
-
-### Key Features
-
-- **🔌 MT5 Data Integration**: Connect to MT5 terminal and extract OHLCV, tick data, and trade history
-- **📈 100+ Technical Indicators**: Momentum, trend, volatility, volume, and candlestick pattern features
-- **🎯 Multiple Edge Categories**:
-  - Time-based edges (hour effects, day effects, seasonal patterns)
-  - Trend/momentum edges (crossovers, breakouts, momentum)
-  - Mean-reversion edges (z-score, oscillator extremes, gaps)
-  - Volatility edges (squeeze, regime detection)
-  - Market structure edges (support/resistance, breakouts)
-  - Pairs/correlation edges (cointegration, lead-lag)
-  - Machine learning edges (classification, regime detection)
-- **📊 Statistical Validation**: T-tests, non-parametric tests, multiple testing corrections
-- **🔄 Walk-Forward Validation**: Proper out-of-sample testing
-- **🎲 Bootstrap Confidence Intervals**: Robust statistical inference
-- **🌐 Web Dashboard**: Interactive visualization of results
+A comprehensive backtesting and research system that extracts, validates, and reports potential trading edges from historical MT5 data. Tests 100+ edge hypotheses across 7 categories using statistical significance testing, walk-forward validation, and bootstrap confidence intervals. For research purposes only -- no live trades are executed.
 
 ---
 
-## 📁 Project Structure
+## Architecture
 
 ```
-mt5_edge_extractor/
-├── __init__.py              # Package initialization
-├── config.py                # Configuration settings
-├── requirements.txt         # Python dependencies
-├── main.py                  # Main entry point
-├── demo.py                  # Quick demo script
-├── comprehensive_demo.py    # Full system demo
-│
-├── data/                    # Data handling
-│   ├── mt5_connector.py     # MT5 connection and data extraction
-│   ├── data_loader.py       # Unified data loading interface
-│   └── preprocessing.py     # Data cleaning and feature engineering
-│
-├── features/                # Technical indicators
-│   ├── momentum.py          # RSI, MACD, Stochastic, etc.
-│   ├── trend.py             # MA, ADX, Ichimoku, etc.
-│   ├── volatility_features.py # ATR, Bollinger, Keltner, etc.
-│   ├── volume.py            # OBV, VWAP, MFI, etc.
-│   └── candle_patterns.py   # 20+ candlestick patterns
-│
-├── edges/                   # Edge detection modules
-│   ├── time_based.py        # Hour, day, session, seasonal effects
-│   ├── trend_momentum.py    # Crossovers, breakouts, momentum
-│   ├── mean_reversion.py    # Z-score, RSI extremes, gaps
-│   ├── volatility_edges.py  # Squeeze, regime, ATR breakout
-│   ├── market_structure.py  # S/R levels, swing points
-│   ├── pairs.py             # Cointegration, correlation, spread trading
-│   └── machine_learning.py  # ML classification, regime detection
-│
-├── validation/              # Statistical validation
-│   ├── statistical_tests.py # Hypothesis testing
-│   ├── walk_forward.py      # Walk-forward validation
-│   └── bootstrap.py         # Bootstrap confidence intervals
-│
-├── metrics/                 # Performance metrics
-│   └── edge_metrics.py      # Trade and portfolio metrics
-│
-├── reporting/               # Output generation
-│   ├── visualizer.py        # Chart generation
-│   └── html_report.py       # HTML report generation
-│
-└── engine/                  # Main orchestration
-    └── backtest_engine.py   # Complete analysis pipeline
++----------------+     +------------------+     +------------------+
+|   MT5 / CSV    | --> |  Data Loader &   | --> | Feature Engine   |
+|  (OHLCV Data)  |     |  Preprocessing   |     | (50+ features)   |
++----------------+     +------------------+     +--------+---------+
+                                                         |
+                                            +------------+------------+
+                                            |                         |
+                                   +--------+--------+      +--------+--------+
+                                   |  Edge Detectors  |      |   Validation    |
+                                   |  (7 categories)  |      | Walk-Forward    |
+                                   |  100+ hypotheses  |      | Bootstrap       |
+                                   +--------+---------+      | Monte Carlo     |
+                                            |                +--------+--------+
+                                            +-------+--------+
+                                                    |
+                                           +--------+--------+
+                                           |    Reporting     |
+                                           | HTML / JSON / CSV|
+                                           +-----------------+
 ```
 
 ---
 
-## 🚀 Quick Start
+## Edge Categories
 
-### Run Demo with Simulated Data
+### 1. Time-Based Edges (`time_based.py`)
 
-```bash
-cd /home/z/my-project
-python mt5_edge_extractor/demo.py
-```
+Detects statistical anomalies tied to time:
+- **Hour-of-day effects**: Which hours have directional bias
+- **Day-of-week effects**: Monday vs Friday return patterns
+- **Month-of-year / seasonal patterns**: Recurring annual effects
+- **Session-based edges**: Asian, London, NY session biases
 
-### Run Comprehensive Demo
+### 2. Trend & Momentum Edges (`trend_momentum.py`)
 
-```bash
-python mt5_edge_extractor/comprehensive_demo.py
-```
+Classical trend-following and momentum signals:
+- **Moving average crossovers**: EMA/SMA cross signals with various periods
+- **Breakout strategies**: N-bar high/low breakouts
+- **Momentum indicators**: RSI, MACD, Stochastic extremes and crossovers
+- **ADX trend strength**: Directional movement filters
 
-### Access Web Dashboard
+### 3. Mean Reversion Edges (`mean_reversion.py`)
 
-The web dashboard is available at the root URL when the server is running.
+Counter-trend strategies exploiting overextension:
+- **Z-score reversion**: Price deviation from rolling mean (1.0/1.5/2.0/2.5 sigma)
+- **Oscillator extremes**: RSI oversold/overbought reversals
+- **Gap fills**: Opening gap reversal statistics
+- **Bollinger Band bounces**: Band touch reversals
 
----
+### 4. Volatility Edges (`volatility_edges.py`)
 
-## 🎯 Edge Categories
+Strategies based on volatility regime changes:
+- **Volatility squeeze**: Low-vol compression followed by expansion
+- **ATR regime detection**: High vs low volatility performance differences
+- **Range contraction/expansion**: NR4/NR7 patterns
 
-### 1. Time-Based Edges
+### 5. Market Structure Edges (`market_structure.py`)
 
-| Edge Type | Description | Tests |
-|-----------|-------------|-------|
-| Hour-of-Day | Returns by trading hour | 24 |
-| Day-of-Week | Monday effect, Friday squaring | 5 |
-| Session Effects | Asian, London, NY, Overlaps | 5 |
-| Monthly Effects | January effect, month-end rebalancing | 12 |
-| Weekend Gap | Gap fill tendency | 1 |
-| Opening Range | First hour range patterns | 1 |
+Price action and structural patterns:
+- **Support/resistance breakouts**: Key level breaks with volume confirmation
+- **Consecutive candle patterns**: N consecutive up/down bars reversal probability
+- **Inside bars / outside bars**: Consolidation breakout patterns
 
-### 2. Trend/Momentum Edges
+### 6. Pairs & Correlation Edges (`pairs.py`)
 
-| Edge Type | Description |
-|-----------|-------------|
-| MA Crossovers | Golden/Death cross signals |
-| N-Bar Momentum | Autocorrelation, Hurst exponent |
-| Donchian Breakouts | Channel breakouts |
-| Bollinger Breakouts | Band penetration |
-| ADX Trend Filter | Trending vs ranging identification |
-| Runs Test | Randomness detection |
+Cross-instrument relationship analysis:
+- **Correlation edges**: Decorrelation signals between typically correlated pairs
+- **Cointegration edges**: Mean-reversion of cointegrated pair spreads
+- **Spread Z-score**: Statistical arbitrage signals
 
-### 3. Mean-Reversion Edges
+### 7. Machine Learning Edges (`machine_learning.py`)
 
-| Edge Type | Description |
-|-----------|-------------|
-| Z-Score MR | Price deviation from mean |
-| RSI Extremes | Overbought/oversold reversals |
-| Stochastic Extremes | K/D crossovers at extremes |
-| Bollinger Band Reversion | Price returning to bands |
-| Consecutive Candle Reversal | Overextension patterns |
-| VWAP Deviation | Distance from VWAP |
-
-### 4. Volatility Edges
-
-| Edge Type | Description |
-|-----------|-------------|
-| Volatility Clustering | ATR autocorrelation |
-| Contraction-Expansion | Low vol → high vol moves |
-| BB Squeeze | Band inside Keltner |
-| NR4/NR7 Patterns | Narrowest range patterns |
-| ATR Breakouts | Price moves exceeding N×ATR |
-| Regime Detection | Low/Normal/High vol regimes |
-
-### 5. Market Structure Edges
-
-| Edge Type | Description |
-|-----------|-------------|
-| Round Number Effect | S/R at psychological levels |
-| Previous Day Levels | High/Low/Close as S/R |
-| Swing Levels | Swing high/low as S/R |
-| Breakout Retest | Return to broken levels |
-| Failed Breakout Reversal | Price rejecting after breakout |
-| HH/HL Trend | Higher highs/lows continuation |
-
-### 6. Pairs/Correlation Edges
-
-| Edge Type | Description |
-|-----------|-------------|
-| Correlation Breakdown | Divergence from correlated pairs |
-| Lead-Lag Relationships | One pair leading another |
-| Cointegration | Mean-reverting spreads |
-| Currency Strength | Strongest vs weakest currency |
-
-### 7. Machine Learning Edges
-
-| Edge Type | Description |
-|-----------|-------------|
-| Random Forest | Direction classification |
-| Gradient Boosting | Ensemble predictions |
-| K-Means Regimes | Market state clustering |
-| Isolation Forest | Anomaly detection |
-| Feature Importance | Predictive feature ranking |
+Data-driven pattern discovery:
+- **Feature importance analysis**: Which features actually predict returns
+- **ML-based edge detection**: Gradient boosting / random forest classifiers
+- **Walk-forward ML validation**: Out-of-sample ML performance
 
 ---
 
-## 📊 Sample Results
+## Feature Engineering (50+ Features)
 
-```
-Total edges tested: 109
-Significant edges (p < 0.05): 19
+| Module | Features |
+|--------|---------|
+| `features/momentum.py` | RSI (7/14/21), MACD, Stochastic, Williams %R, CCI, ROC |
+| `features/trend.py` | SMA (20/50/100/200), EMA (12/26/50/200), ADX, DI+/DI- |
+| `features/volatility_features.py` | ATR(14), Bollinger Bands, historical volatility, Garman-Klass |
+| `features/volume.py` | Volume SMA (10/20/50), OBV, Volume ROC, relative volume |
+| `features/candle_patterns.py` | Doji, hammer, engulfing, inside bar, pin bar, marubozu |
 
-Top Significant Edges:
-┌─────────────────────────────────────────────┬──────────────────┬────────┬───────┐
-│ Edge Name                                   │ Type             │ Sharpe │ Win%  │
-├─────────────────────────────────────────────┼──────────────────┼────────┼───────┤
-│ Hour 12:00                                  │ time_hour        │   8.24 │ 55.0% │
-│ Swing Levels (10)                           │ structure        │   1.20 │ 62.0% │
-│ Swing Levels (5)                            │ structure        │   0.97 │ 58.6% │
-│ Z-Score MR (10, ±2.0σ)                      │ mean_reversion   │   0.73 │ 57.4% │
-│ Z-Score MR (20, ±2.0σ)                      │ mean_reversion   │   0.45 │ 55.6% │
-└─────────────────────────────────────────────┴──────────────────┴────────┴───────┘
-```
+Returns-based features computed at multiple lookback periods (1, 5, 10, 20, 60 bars).
 
 ---
 
-## 🔧 API Usage
+## Validation Pipeline
 
-### Basic Usage
+### Walk-Forward Analysis
 
-```python
-from mt5_edge_extractor.engine.backtest_engine import BacktestEngine
-from mt5_edge_extractor.config import Config, TimeFrame
+Prevents overfitting by testing on unseen data:
+- Training window: 2 years (configurable)
+- Test window: 6 months
+- Step: 3 months
+- Each edge must show significance across multiple walk-forward windows
 
-# Create engine
-engine = BacktestEngine(Config())
+### Bootstrap Confidence Intervals
 
-# Run full analysis
-results = engine.run_full_analysis(
-    symbol='EURUSD',
-    timeframe=TimeFrame.H1,
-    years=3
-)
-
-# Get significant edges
-significant = engine.filter_significant_edges(
-    min_samples=100,
-    max_p_value=0.05,
-    min_win_rate=0.50
-)
-
-for name, edge in significant.items():
-    print(f"{edge.edge_name}: Sharpe={edge.sharpe_ratio:.2f}, Win%={edge.win_rate*100:.1f}")
-```
-
-### Feature Engineering
-
-```python
-from mt5_edge_extractor.data.preprocessing import DataPreprocessor
-from mt5_edge_extractor.features.momentum import MomentumFeatures
-from mt5_edge_extractor.features.trend import TrendFeatures
-
-# Preprocess
-df = DataPreprocessor().preprocess(raw_df)
-
-# Add features
-df = MomentumFeatures.add_all_momentum(df)
-df = TrendFeatures.add_all_trend(df)
-```
+- 10,000 bootstrap samples (configurable)
+- 95% confidence intervals for all metrics
+- Prevents cherry-picking results
 
 ### Statistical Testing
 
-```python
-from mt5_edge_extractor.validation import StatisticalTests, BootstrapValidator
+- **p-value threshold**: 0.05 (configurable)
+- **Minimum sample size**: 100 trades
+- **Multiple hypothesis correction**: Controls false discovery rate
 
-tester = StatisticalTests(significance_level=0.05)
+### Monte Carlo Simulation
 
-# T-test
-result = tester.t_test_one_sample(returns)
-
-# Multiple testing correction
-adjusted_pvals = tester.benjamini_hochberg(p_values)
-
-# Bootstrap
-bootstrap = BootstrapValidator(n_bootstrap=10000)
-result = bootstrap.bootstrap_sharpe(returns)
-```
-
-### Visualization
-
-```python
-from mt5_edge_extractor.reporting import EdgeVisualizer, HTMLReportGenerator
-
-viz = EdgeVisualizer()
-
-# Generate charts
-equity_fig = viz.plot_equity_curve(returns)
-dd_fig = viz.plot_drawdown(returns)
-heatmap_fig = viz.plot_monthly_returns(returns)
-
-# Generate HTML report
-reporter = HTMLReportGenerator()
-html = reporter.generate_report(edge_results, df, returns)
-```
+- 1,000 random permutation runs
+- Validates that edge is not due to random chance
+- Compares actual results vs shuffled baseline
 
 ---
 
-## ✅ Decision Framework
+## Transaction Cost Model
 
-Before considering any edge for live trading:
+Realistic cost assumptions built into all backtests:
 
-| Criterion | Check |
-|-----------|-------|
-| Is p-value < 0.05? | Statistical significance |
-| Is sample size > 100? | Sufficient data |
-| Survives walk-forward? | Out-of-sample validation |
-| Net of costs still +EV? | After spreads/slippage |
-| Logical explanation exists? | Economic rationale |
-| Works on other symbols? | Robustness |
-| Works on other timeframes? | Not overfit to one TF |
-| Stable across years? | Regime independence |
-
-**ALL YES? → Paper trade → Small live → Scale up**
+| Cost | Default |
+|------|---------|
+| Spread | 1.5 pips |
+| Commission | $7.00 per lot per side |
+| Slippage | 0.5 pips (5.0 during news) |
+| Spread during news | 3x normal |
 
 ---
 
-## ⚠️ Common Pitfalls Avoided
+## Installation
 
-This system is designed to avoid common backtesting mistakes:
+### Prerequisites
 
-| Pitfall | Solution |
-|---------|----------|
-| Data Mining Bias | Multiple testing corrections (Bonferroni, FDR) |
-| Look-Ahead Bias | Strict point-in-time data handling |
-| Survivorship Bias | Can include delisted symbols |
-| Overfitting | Walk-forward validation, out-of-sample testing |
-| Selection Bias | Test across all available data |
+- Python 3.10+
+- MetaTrader 5 terminal (optional -- falls back to simulated data)
 
----
-
-## 📦 Installation
-
-### Requirements
+### Setup
 
 ```bash
-pip install numpy pandas scipy statsmodels scikit-learn matplotlib seaborn
+cd mt5_edge_extractor
+pip install -r requirements.txt
 ```
 
-### Optional (for MT5 connection - Windows only)
+---
+
+## Usage
+
+### Full Analysis
 
 ```bash
-pip install MetaTrader5
+# Run complete edge analysis on EURUSD H1 (2 years)
+python -m mt5_edge_extractor.main
+
+# Specify symbol and timeframe
+python -m mt5_edge_extractor.main --symbol GBPUSD --years 3
+
+# Quick test (1 year, minimal output)
+python -m mt5_edge_extractor.main --quick
+```
+
+### Multi-Symbol Analysis
+
+```bash
+# Scan multiple symbols and generate comparison report
+python -m mt5_edge_extractor.multi_analysis
+```
+
+### Demo Mode
+
+```bash
+# Run with simulated data (no MT5 required)
+python -m mt5_edge_extractor.demo
+
+# Comprehensive demo with all edge types
+python -m mt5_edge_extractor.comprehensive_demo
 ```
 
 ---
 
-## 📋 Output
+## Results & Output
 
-The system generates:
+### Console Output
 
-1. **JSON Report**: Complete analysis with all edge statistics
-2. **Console Summary**: Top edges, win rates, Sharpe ratios
-3. **HTML Report**: Styled report with visualizations
-4. **Web Dashboard**: Interactive visualization
+```
+==================================================================
+  MT5 TRADING EDGE EXTRACTOR - BACKTESTING SYSTEM
+==================================================================
+
+Total edges tested: 127
+Significant edges: 14
+
+By type:
+  - time_based: 3
+  - trend_momentum: 4
+  - mean_reversion: 3
+  - volatility: 2
+  - market_structure: 2
+
+----------------------------------------------------------------------
+  TOP 10 SIGNIFICANT EDGES (by Sharpe Ratio)
+----------------------------------------------------------------------
+
+Edge Name                                Type              Sharpe  Win%
+----------------------------------------------------------------------
+RSI_14_oversold_bounce                   mean_reversion      1.85  62.3%
+London_session_breakout                  time_based          1.52  58.7%
+EMA_12_26_cross                          trend_momentum      1.41  55.2%
+BB_lower_bounce                          mean_reversion      1.38  61.1%
+...
+```
+
+### Decision Framework
+
+The system prints a checklist for each significant edge:
+1. Is p-value < 0.05?
+2. Is sample size > 100?
+3. Net of costs still +EV?
+4. Works on other symbols?
+5. Works on other timeframes?
+6. Stable across years (walk-forward)?
+
+All YES = potential real edge. Paper trade, then small live, then scale.
+
+### Report Files
+
+- `edge_analysis_report.json` -- Full JSON report with all metrics
+- `comprehensive_edge_report.json` -- Multi-edge comparison
+- `multi_analysis_results.csv` -- Cross-symbol results table
+- HTML reports with interactive charts (when `generate_html=True`)
+
+### Key Metrics Per Edge
+
+| Metric | Description |
+|--------|------------|
+| Sharpe Ratio | Risk-adjusted return |
+| Win Rate | Percentage of profitable trades |
+| Profit Factor | Gross profit / gross loss |
+| p-value | Statistical significance |
+| Sample Size | Number of trades tested |
+| Max Drawdown | Worst peak-to-trough decline |
+| is_significant | Boolean: passes all validation checks |
 
 ---
 
-## 📜 License
+## Project Structure
 
-MIT License - Use at your own risk.
-
----
-
-## ⚠️ Disclaimer
-
-**THIS IS FOR RESEARCH AND EDUCATIONAL PURPOSES ONLY.**
-
-- No live trading is performed
-- Past performance does not guarantee future results
-- Always paper trade before risking real capital
-- Consider transaction costs, slippage, and market conditions
-- Use proper risk management
-
----
-
-## 📚 References
-
-- Moskowitz et al. (2012): Time-Series Momentum
-- Lustig & Verdelhan (2007): Carry Trade
-- Mandelbrot (1963): Volatility Clustering
-- Gao et al. (2018): Intraday Momentum
-
----
-
-**MT5 Edge Extraction System v1.0.0**
+```
+mt5_edge_extractor/
+  __init__.py
+  main.py                           # Entry point
+  config.py                         # All configuration dataclasses
+  demo.py                           # Quick demo with simulated data
+  comprehensive_demo.py             # Full demo with all edge types
+  multi_analysis.py                 # Multi-symbol analysis runner
+  data/
+    data_loader.py                  # Data loading and caching
+    mt5_connector.py                # MT5 terminal wrapper
+    preprocessing.py                # Data cleaning and normalization
+  features/
+    __init__.py
+    momentum.py                     # RSI, MACD, Stochastic, etc.
+    trend.py                        # SMA, EMA, ADX
+    volatility_features.py          # ATR, Bollinger, historical vol
+    volume.py                       # OBV, Volume SMA, relative volume
+    candle_patterns.py              # Doji, hammer, engulfing, etc.
+  edges/
+    __init__.py
+    time_based.py                   # Hour/day/session effects
+    trend_momentum.py               # Crossovers, breakouts, momentum
+    mean_reversion.py               # Z-score, oscillator, gap fills
+    volatility_edges.py             # Squeeze, regime, range patterns
+    market_structure.py             # S/R, consecutive candles
+    pairs.py                        # Correlation, cointegration
+    machine_learning.py             # ML classifiers, feature importance
+  engine/
+    backtest_engine.py              # Core backtesting engine
+  validation/
+    bootstrap.py                    # Bootstrap confidence intervals
+    statistical_tests.py            # p-value, significance testing
+    walk_forward.py                 # Walk-forward out-of-sample testing
+  metrics/
+    __init__.py                     # Sharpe, PF, win rate, drawdown
+  reporting/
+    html_report.py                  # Interactive HTML reports
+    visualizer.py                   # Matplotlib/Plotly charts
+```
