@@ -1,0 +1,157 @@
+{
+  "generated_at": "2026-02-18T01:08:43.598275",
+  "data_summary": {
+    "bars": 9600,
+    "start": "2022-01-03 00:00:00",
+    "end": "2023-07-14 23:00:00",
+    "features": 196,
+    "pairs": [
+      "EURUSD",
+      "GBPUSD",
+      "USDJPY"
+    ]
+  },
+  "edge_analysis": {
+    "total_tested": 109,
+    "significant": 19,
+    "by_type": {
+      "time_hour": 24,
+      "time_day": 5,
+      "time_session": 5,
+      "time_month": 12,
+      "time_pattern": 4,
+      "trend_crossover": 3,
+      "momentum": 3,
+      "regime": 1,
+      "breakout": 4,
+      "trend_filter": 2,
+      "randomness": 1,
+      "mean_reversion": 19,
+      "volatility": 13,
+      "structure": 12,
+      "currency_strength": 1
+    }
+  },
+  "top_edges": [
+    {
+      "name": "Hour 12:00",
+      "type": "time_hour",
+      "sharpe": 8.241950265584423,
+      "win_rate": 0.55,
+      "p_value": 0.03465663945973474,
+      "sample_size": 400
+    },
+    {
+      "name": "Swing Levels (10)",
+      "type": "structure",
+      "sharpe": 1.203414888180231,
+      "win_rate": 0.619821283509342,
+      "p_value": 1.1141309866519117e-16,
+      "sample_size": 1231
+    },
+    {
+      "name": "Swing Levels (5)",
+      "type": "structure",
+      "sharpe": 0.9695469756948455,
+      "win_rate": 0.586086086086086,
+      "p_value": 1.1986438142652933e-17,
+      "sample_size": 1998
+    },
+    {
+      "name": "Z-Score MR (10, \u00b12.0\u03c3)",
+      "type": "mean_reversion",
+      "sharpe": 0.7344668096725506,
+      "win_rate": 0.5736434108527132,
+      "p_value": 0.0009521724876043331,
+      "sample_size": 516
+    },
+    {
+      "name": "Swing Levels (3)",
+      "type": "structure",
+      "sharpe": 0.6604998865614892,
+      "win_rate": 0.5585459629500175,
+      "p_value": 2.436357079757575e-12,
+      "sample_size": 2861
+    },
+    {
+      "name": "Z-Score MR (20, \u00b12.0\u03c3)",
+      "type": "mean_reversion",
+      "sharpe": 0.44533799436330845,
+      "win_rate": 0.5557768924302788,
+      "p_value": 0.0050354147115808014,
+      "sample_size": 1004
+    },
+    {
+      "name": "BB Reversion (20, 2.0\u03c3)",
+      "type": "mean_reversion",
+      "sharpe": 0.44533799436330845,
+      "win_rate": 0.5557768924302788,
+      "p_value": 0.0050354147115808014,
+      "sample_size": 1004
+    },
+    {
+      "name": "Previous Day Close",
+      "type": "structure",
+      "sharpe": 0.3335290479962519,
+      "win_rate": 0.5327868852459017,
+      "p_value": 0.023049533013639118,
+      "sample_size": 1952
+    },
+    {
+      "name": "Z-Score MR (10, \u00b11.5\u03c3)",
+      "type": "mean_reversion",
+      "sharpe": 0.29418342384198154,
+      "win_rate": 0.5275109170305677,
+      "p_value": 0.00508401004758644,
+      "sample_size": 2290
+    },
+    {
+      "name": "Z-Score MR (20, \u00b11.5\u03c3)",
+      "type": "mean_reversion",
+      "sharpe": 0.2805355407362088,
+      "win_rate": 0.5227601156069365,
+      "p_value": 0.003307633784597877,
+      "sample_size": 2768
+    },
+    {
+      "name": "Hurst Exponent",
+      "type": "regime",
+      "sharpe": 0,
+      "win_rate": 0,
+      "p_value": 0.25893964788015933,
+      "sample_size": 9599
+    },
+    {
+      "name": "Donchian Breakout (10)",
+      "type": "breakout",
+      "sharpe": -0.24784335671468197,
+      "win_rate": 0.48054794520547944,
+      "p_value": 0.03506719452557185,
+      "sample_size": 1825
+    },
+    {
+      "name": "ATR Breakout (1.0x)",
+      "type": "volatility",
+      "sharpe": -0.2546669668338487,
+      "win_rate": 0.48493626882966395,
+      "p_value": 0.035207656298338,
+      "sample_size": 1726
+    },
+    {
+      "name": "Breakout Retest (20)",
+      "type": "structure",
+      "sharpe": -0.3252415490651863,
+      "win_rate": 0.47974537037037035,
+      "p_value": 0.0071442383739233175,
+      "sample_size": 1728
+    },
+    {
+      "name": "Donchian Breakout (20)",
+      "type": "breakout",
+      "sharpe": -0.3580458186980425,
+      "win_rate": 0.47172734314484893,
+      "p_value": 0.010498183893889979,
+      "sample_size": 1291
+    }
+  ]
+}
